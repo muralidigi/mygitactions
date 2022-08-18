@@ -1,0 +1,21 @@
+on: 
+  pull_request:
+    types: [closed]
+#on: [push]
+
+jobs:
+  cleanup_branches_job:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    name: cleanup_branches
+    steps:
+      # To use this action, you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: pruning
+        uses: digicert/prune_old_branches_action@v8
+        with:
+          numDays: '180'
+          numTags: '5'
